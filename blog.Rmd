@@ -43,16 +43,36 @@ MA_party_affiliation <- house_elections %>%
 MA_party_affiliation
 
 MA_party <- ggplot(data = MA_party_affiliation, aes(x = party )) +
-  geom_bar() 
+  geom_bar( aes( color = party) ) +
+  #scale_color_manual(values = c("blue", "green", "yellow", "red")) 
 
 MA_party + 
   labs(title = "Comparison of Massachusetts House Candidates' Party Affiliations", x = "Party", y = "Amount") +
   scale_x_discrete( breaks = c("D", "I", "L", "R"),
                     labels = c("Democrat", "Independent", "Libertarian", "Republican")) +
   theme ( axis.ticks.x = element_blank() )
-  #scale_color_manual(values = c("blue", "green", "yellow", "red")) 
- 
 
+# In the chart above, we analyzed the political party affiliations of the 2011-2012 Massachusetts House of Representative candidates. What we found was that out of the 32 candidates during the 2011-2012 cycle, the majority of them were either part of the Democratic or Republican party. This makes sense because the United States politics is dominated by a two-party system in which the Democrats and Republicans are the most popular. In Massachusetts, besides those 2 parties, some House candidates were in the Independent or Libertarian parties as well; however, they made up only 4 out of the 32 candidates. 
+
+```
+
+
+```{r}
+contributions
+
+amt_contributed <- contributions %>%
+  filter( state == "MA" ) %>%
+  select( state, transaction_amt, name ) %>%
+  arrange( desc(name) )
+
+amt_contributed
+
+most_amt <- ggplot(data = amt_contributed, aes( x = name )) + geom_bar() +
+  labs(title = "Comparison of Contributions to Committees in Massachusetts", x = "committee receiving contribution", y = "# of ppl/businesses contributing money") 
+
+most_amt 
+
+# The following chart  below shows committees in Massachuset tsthat received monetary contributions from individual supporters. As you can see, there are many committees that did not receive many contributions at all (less than 250 individuals/businesses donated $ to the committee) and approximately 9 committees that receieved contributions from 250 or more individuals. There were 2 committees that received more than 750 contributions showing their popularity. They must have done something positive in Massachusetts to have gotten so many donations
 
 
 ```
@@ -72,7 +92,27 @@ MA_party +
 
 
 
+```{r}
 
+# the code below is for the US party affiliation 
+US_party <- house_elections %>%
+  select(state, candidate_name, party)
+
+#dim(party_affiliation)
+#class(party_affiliation)
+
+US_party
+
+US_party <- ggplot(data = US_party, aes(x = party )) +
+  geom_bar() 
+
+US_party + 
+  labs(title = "Comparison of Massachusetts House Candidates' Party Affiliations", x = "Party", y = "Amount") +
+  scale_x_discrete( breaks = c("D", "I", "L", "R"),
+                    labels = c("Democrat", "Independent", "Libertarian", "Republican")) +
+  theme ( axis.ticks.x = element_blank() )
+  #scale_color_manual(values = c("blue", "green", "yellow", "red")) 
+```
 
 
 ```{r}
