@@ -31,24 +31,22 @@ house_elections
 #glimpse(house_elections)
 #head(house_elections)
 
-MA_party_affiliation <- house_elections %>%
-  filter( state == "MA") %>%
-  select(state, candidate_name, party) 
+party_affiliation <- house_elections %>%
+  filter( party == c("D", "R") )%>%
+  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
+  group_by(party, state) %>%
+  summarise( n = n())
 
 #dim(party_affiliation)
 #class(party_affiliation)
 
-MA_party_affiliation
+party_affiliation
 
-MA_party <- ggplot(data = MA_party_affiliation, aes(x = party )) +
-  geom_bar( aes( color = party) ) 
+ggplot(data = party_affiliation, aes(x = state, y = n, fill = party )) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Candidates in Top Ten Electoral Vote States") 
   #scale_color_manual(values = c("blue", "green", "yellow", "red")) 
-
-MA_party + 
-  labs(title = "Comparison of Massachusetts House Candidates' Party Affiliations", x = "Party", y = "Amount") +
-  scale_x_discrete( breaks = c("D", "I", "L", "R"),
-                    labels = c("Democrat", "Independent", "Libertarian", "Republican")) +
-  theme ( axis.ticks.x = element_blank() )
 
 # In the chart above, we analyzed the political party affiliations of the 2011-2012 Massachusetts House of Representative candidates. What we found was that out of the 32 candidates during the 2011-2012 cycle, the majority of them were either part of the Democratic or Republican party. This makes sense because the United States politics is dominated by a two-party system in which the Democrats and Republicans are the most popular. In Massachusetts, besides those 2 parties, some House candidates were in the Independent or Libertarian parties as well; however, they made up only 4 out of the 32 candidates. 
 
@@ -74,18 +72,6 @@ most_amt
 
 
 ```
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
