@@ -23,57 +23,6 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
-```{r}
-house_elections
-#glimpse(house_elections)
-#head(house_elections)
-
-party_affiliation <- house_elections %>%
-  filter( party == c("D", "R") )%>%
-  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
-  group_by(party, state) %>%
-  summarise( n = n() )
-
-party_affiliation
-
-ggplot(data = party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Are Democrats or Republicans More Popular in House Elections?") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
-
-# In the chart above, we analyzed the political party affiliations of the 2011-2012 Massachusetts House of Representative candidates. What we found was that out of the 32 candidates during the 2011-2012 cycle, the majority of them were either part of the Democratic or Republican party. This makes sense because the United States politics is dominated by a two-party system in which the Democrats and Republicans are the most popular. In Massachusetts, besides those 2 parties, some House candidates were in the Independent or Libertarian parties as well; however, they made up only 4 out of the 32 candidates. 
-
-```
-
-
-```{r}
-contributions
-
-amt_contributed <- contributions %>%
-  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
-  select( state, transaction_amt, name ) %>%
-  arrange( desc(name) )
-
-amt_contributed
-
-most_amt <- ggplot(data = amt_contributed, aes( x = name )) + geom_bar() +
-  labs(title = "Comparison of Contributions to Committees in Massachusetts", x = "committee receiving contribution", y = "# of ppl/businesses contributing money") 
-
-most_amt 
-
-# The following chart  below shows committees in Massachuset tsthat received monetary contributions from individual supporters. As you can see, there are many committees that did not receive many contributions at all (less than 250 individuals/businesses donated $ to the committee) and approximately 9 committees that receieved contributions from 250 or more individuals. There were 2 committees that received more than 750 contributions showing their popularity. They must have done something positive in Massachusetts to have gotten so many donations
-
-
-```
-
-
-
-```{r}
-glimpse(contributions)
-```
-
-
 ```{r, warning=FALSE, message=FALSE}
 cand1 <- candidates %>%
   filter(cand_election_yr == c(2010, 2012)) %>%
@@ -107,4 +56,42 @@ ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = 
   ggtitle("Committees in Top Ten Electoral Vote States") +
   scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
 ```
+
+```{r}
+party_affiliation <- house_elections %>%
+  filter( party == c("D", "R") )%>%
+  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
+  group_by(party, state) %>%
+  summarise( n = n() )
+```
+
+```{r}
+ggplot(data = party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Are Democrats or Republicans More Popular in House Elections?") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+```
+
+# In the chart above, we analyzed the political party affiliations of the 2011-2012 Massachusetts House of Representative candidates. What we found was that out of the 32 candidates during the 2011-2012 cycle, the majority of them were either part of the Democratic or Republican party. This makes sense because the United States politics is dominated by a two-party system in which the Democrats and Republicans are the most popular. In Massachusetts, besides those 2 parties, some House candidates were in the Independent or Libertarian parties as well; however, they made up only 4 out of the 32 candidates. 
+
+```{r}
+amt_contributed <- contributions %>%
+  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
+  select( state, transaction_amt, name ) %>%
+  arrange( desc(name) )
+
+amt_contributed
+
+most_amt <- ggplot(data = amt_contributed, aes( x = name )) + geom_bar() +
+  labs(title = "Comparison of Contributions to Committees in Massachusetts", x = "committee receiving contribution", y = "# of ppl/businesses contributing money") 
+
+most_amt 
+
+# The following chart  below shows committees in Massachuset tsthat received monetary contributions from individual supporters. As you can see, there are many committees that did not receive many contributions at all (less than 250 individuals/businesses donated $ to the committee) and approximately 9 committees that receieved contributions from 250 or more individuals. There were 2 committees that received more than 750 contributions showing their popularity. They must have done something positive in Massachusetts to have gotten so many donations
+
+
+```
+
+
 
