@@ -39,7 +39,7 @@ party_affiliation
 ggplot(data = party_affiliation, aes(x = state, y = n, fill = party )) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
-  ggtitle("Are Democrats or Republicans More Popular?") 
+  ggtitle("Are Democrats or Republicans More Popular in 11 States?") 
 
 # In the chart above, we analyzed the political party affiliations of the 2011-2012 Massachusetts House of Representative candidates. What we found was that out of the 32 candidates during the 2011-2012 cycle, the majority of them were either part of the Democratic or Republican party. This makes sense because the United States politics is dominated by a two-party system in which the Democrats and Republicans are the most popular. In Massachusetts, besides those 2 parties, some House candidates were in the Independent or Libertarian parties as well; however, they made up only 4 out of the 32 candidates. 
 
