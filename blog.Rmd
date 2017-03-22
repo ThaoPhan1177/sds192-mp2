@@ -9,11 +9,8 @@ output: html_document
 ## Loading the data
 ## save changes, I pull & commit, Asmita will push.
 
-```{r}
-install.packages( c("shiny", "htmlwidgets"))
-```
-
 ```{r, warning=FALSE, message=FALSE}
+install.packages( c("shiny", "htmlwidgets"))
 library(dplyr)
 library(ggplot2)
 library(tidyr)
