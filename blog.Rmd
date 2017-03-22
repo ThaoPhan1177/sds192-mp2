@@ -69,30 +69,6 @@ most_amt
 
 
 
-
-```{r}
-
-# the code below is for the US party affiliation 
-US_party <- house_elections %>%
-  select(state, candidate_name, party)
-
-#dim(party_affiliation)
-#class(party_affiliation)
-
-US_party
-
-US_party <- ggplot(data = US_party, aes(x = party )) +
-  geom_bar() 
-
-US_party + 
-  labs(title = "Comparison of Massachusetts House Candidates' Party Affiliations", x = "Party", y = "Amount") +
-  scale_x_discrete( breaks = c("D", "I", "L", "R"),
-                    labels = c("Democrat", "Independent", "Libertarian", "Republican")) +
-  theme ( axis.ticks.x = element_blank() )
-  #scale_color_manual(values = c("blue", "green", "yellow", "red")) 
-```
-
-
 ```{r}
 glimpse(contributions)
 ```
