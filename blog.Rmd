@@ -25,12 +25,10 @@ load("contributions.rda")
 
 ```{r, warning=FALSE, message=FALSE}
 cand1 <- candidates %>%
-  filter(cand_election_yr == c(2010, 2012)) %>%
   filter(cand_party_affiliation == c("DEM", "REP")) %>%
   filter(cand_office_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ")) %>%
   group_by(cand_party_affiliation, cand_office_state) %>%
   summarise( n = n())
-cand1 <- cand1[-c(1,2,3),]
 ```
 
 ```{r}
