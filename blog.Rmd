@@ -38,7 +38,7 @@ MA_party_affiliation <- house_elections %>%
 MA_party_affiliation
 
 MA_party <- ggplot(data = MA_party_affiliation, aes(x = party )) +
-  geom_bar( aes( color = party) ) +
+  geom_bar( aes( color = party) ) 
   #scale_color_manual(values = c("blue", "green", "yellow", "red")) 
 
 MA_party + 
