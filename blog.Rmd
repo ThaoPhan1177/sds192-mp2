@@ -36,10 +36,11 @@ party_affiliation <- house_elections %>%
 
 party_affiliation
 
-ggplot(data = party_affiliation, aes(x = state, y = n, fill = party )) +
+ggplot(data = party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
-  ggtitle("Are Democrats or Republicans More Popular in 11 States?") 
+  ggtitle("Are Democrats or Republicans More Popular?") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
 
 # In the chart above, we analyzed the political party affiliations of the 2011-2012 Massachusetts House of Representative candidates. What we found was that out of the 32 candidates during the 2011-2012 cycle, the majority of them were either part of the Democratic or Republican party. This makes sense because the United States politics is dominated by a two-party system in which the Democrats and Republicans are the most popular. In Massachusetts, besides those 2 parties, some House candidates were in the Independent or Libertarian parties as well; however, they made up only 4 out of the 32 candidates. 
 
@@ -87,7 +88,8 @@ cand1 <- cand1[-c(1,2,3),]
 ggplot( cand1, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
-  ggtitle("Candidates in Top Ten Electoral Vote States") 
+  ggtitle("Candidates in Top Ten Electoral Vote States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
 ```
 
 ```{r, warning=FALSE, message=FALSE}
@@ -102,6 +104,7 @@ com1 <- committees %>%
 ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
-  ggtitle("Committees in Top Ten Electoral Vote States") 
+  ggtitle("Committees in Top Ten Electoral Vote States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
 ```
 
