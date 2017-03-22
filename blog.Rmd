@@ -51,7 +51,7 @@ ggplot(data = party_affiliation, aes(x = state, y = n, fill = party, width = .5)
 contributions
 
 amt_contributed <- contributions %>%
-  filter( state == "MA" ) %>%
+  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
   select( state, transaction_amt, name ) %>%
   arrange( desc(name) )
 
