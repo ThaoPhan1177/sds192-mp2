@@ -8,10 +8,43 @@ output: html_document
 
 ## Loading the data
 
-
-```{r, include=FALSE}
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
+```
+
+```{r, warning=FALSE, message=FALSE}
+cand1 <- candidates %>%
+  filter(cand_election_yr == c(2010, 2012)) %>%
+  filter(cand_party_affiliation == c("DEM", "REP")) %>%
+  filter(cand_office_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ")) %>%
+  group_by(cand_party_affiliation, cand_office_state) %>%
+  summarise( n = n())
+cand1 <- cand1[-c(1,2,3),]
+```
+
+```{r}
+ggplot( cand1, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Candidates in Top Ten Electoral Vote States") 
+```
+
+```{r, warning=FALSE, message=FALSE}
+com1 <- committees %>%
+  filter(cmte_party_affiliation == c("DEM", "REP")) %>%
+  filter(cmte_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ")) %>%
+  group_by(cmte_party_affiliation, cmte_state) %>%
+  summarise( n = n())
+```
+
+```{r}
+ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Committees in Top Ten Electoral Vote States") 
 ```
