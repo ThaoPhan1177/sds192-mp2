@@ -58,28 +58,8 @@ ggplot( top_10, aes(x = cand_office_state, y = n, fill = cand_party_affiliation,
 ```
 
 
-# Candidates in Southern States
-# States: AL AR FL GA KS LA MS NC TN TX VA 
-```{r, warning=FALSE, message=FALSE}
-south_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "AL", s2 = "AR", s3 = "FL", s4 = "GA", s5 = "KS", s6 = "LA", s7  = "MS", s8 = "NC", s9 = "TN", s10 = "TX", s11 = "VA" )
-```
-
-```{r}
-ggplot( south_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Candidate Party Affiliation in Southern States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Candidate Party Affiliation") +
-  labs(x = "Candidate's Office State") +
-  labs(y = " # of Candidates in Each Party")
-
-```
-
-# ME NH VT MA RI CT NY NJ PA
-# CT MA ME NH NJ NY PA RI VT 
 # Candidates in North Eastern States
-# States: AL AR FL GA KS LA MS NC TN TX VA 
+# States: CT MA ME NH NJ NY PA RI VT 
 ```{r, warning=FALSE, message=FALSE}
 north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0", s11 = "0" )
 ```
@@ -97,44 +77,21 @@ ggplot( north_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliat
 ```
 
 
-
-
-# Candidates in Western States
-# States: AZ, CA, CO, ID, MO, NM, NV, OR, UT, WA, WY
+# Candidates in Southern States
+# States: AL AR FL GA KS LA MS NC TN TX VA 
 ```{r, warning=FALSE, message=FALSE}
-mount_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "AZ", s2 = "CA", s3 = "CO", s4 = "ID", s5 = "MO", s6 = "NM", s7  = "NV", s8 = "OR", s9 = "UT", s10 = "WA", s11 = "WY" )
+south_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "AL", s2 = "AR", s3 = "FL", s4 = "GA", s5 = "KS", s6 = "LA", s7  = "MS", s8 = "NC", s9 = "TN", s10 = "TX", s11 = "VA" )
 ```
 
 ```{r}
-ggplot( mount_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+ggplot( south_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
-  ggtitle("Candidate Party Affiliation in Western States") +
+  ggtitle("Candidate Party Affiliation in Southern States") +
   scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
   labs( fill = "Candidate Party Affiliation") +
   labs(x = "Candidate's Office State") +
   labs(y = " # of Candidates in Each Party")
-
-
-```
-
-
-# Candidates in MidWestern States
-# ABC ORDER: AZ, CA, CO, ID, MO, NM, NV, OR, UT, WA, WY, 
-```{r, warning=FALSE, message=FALSE}
-midwest_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "AZ", s2 = "CA", s3 = "CO", s4 = "ID", s5 = "MO", s6 = "NM", s7  = "NV", s8 = "OR", s9 = "UT", s10 = "WA", s11 = "WY" )
-```
-
-```{r}
-ggplot( midwest_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Candidate Party Affiliation in Mid-Western States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Candidate Party Affiliation") +
-  labs(x = "Candidate's Office State") +
-  labs(y = " # of Candidates in Each Party")
-
 
 ```
 
@@ -154,6 +111,9 @@ committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 }
 ```
 
+
+# Committee Party affiliation in Top Ten Electoral Vote States
+# States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
 ```{r, warning=FALSE, message=FALSE}
 top_10_cmte <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA", s11 = "TX" )
 ```
@@ -170,11 +130,30 @@ ggplot( top_10_cmte, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, w
 
 ```
 
+
+# Committees Party Affiliation in Northeastern States
+# States: AZ, CA, CO, ID, MO, NM, NV, OR, UT, WA, WY
+```{r, warning=FALSE, message=FALSE}
+north_com <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0", s11 = "0"  )
+```
+
+```{r}
+ggplot( north_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5) ) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Committee Party Affiliation in Northeastern States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Committee Party Affiliation") +
+  labs(x = "Committee's State") +
+  labs(y = "# of Committees in Each Party")
+```
+
 # Committees Party Affiliation in Southern States
 # States: AL AR FL GA KS LA MS NC TN TX VA 
 ```{r, warning=FALSE, message=FALSE}
 south_com <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "AL", s2 = "AR", s3 = "FL", s4 = "GA", s5 = "KS", s6 = "LA", s7  = "MS", s8 = "NC", s9 = "TN", s10 = "TX", s11 = "VA" )
 ```
+
 
 ```{r}
 ggplot( south_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5) ) +
@@ -188,66 +167,25 @@ ggplot( south_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, wid
 
 ```
 
+#-----------------------------------#################--------------------------------------------------------------#
 
-# Candidates in Western States
-# States: AZ, CA, CO, ID, MO, NM, NV, OR, UT, WA, WY
 ```{r, warning=FALSE, message=FALSE}
-west_com <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "AZ", s2 = "CA", s3 = "CO", s4 = "ID", s5 = "MO", s6 = "NM", s7  = "NV", s8 = "OR", s9 = "UT", s10 = "WA", s11 = "WY" )
-```
-
-```{r}
-ggplot( west_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5) ) +
+# Write a function for ggplot 
+ggplotFunc<- function( data, party, state, title, legendName, xLabel, yLabel){
+  ggplot( data, aes(x = state, y = n, fill = party, width = .5)) +  
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
-  ggtitle("Committee Party Affiliation in Western States") +
+  ggtitle(title) +
   scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Committee Party Affiliation") +
-  labs(x = "Committee's State") +
-  labs(y = "# of Committees in Each Party")
-
-```
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-# FUNCTION 3: lets you compare any two parties in any 11 eleven states in house_elections data set
-houseFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
-  house_elections %>%
-    filter( party == c( party1, party2 ) ) %>%
-    filter( state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
-    group_by( party, state ) %>%
-    summarise( n = n() )
+  labs( fill = legendName ) +
+  labs(x = xLabel) +
+  labs(y = yLabel)
 }
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-test_House_Funct <- houseFunction( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "TX", s3 = "NY", s4 = "FL", s5 = "PA", s6 = "IL", s7  = "OH", s8 = "MI", s9 = "GA", s10 = "NC", s11 = "NJ" )
+ggplotFunc( south_com, cmte_party_affiliation, cmte_state, "Committee Party Affiliation in Southern States", "Committee Party Affiliation", "Committee's State", "# of Committees in Each Party" )
 ```
-
-```{r} 
-# For some reason, this ggplot does not work. I'm not sure why. 
-ggplot( test_House_Funct, aes(x = state, y = n, fill = party, width = .5) ) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("TEST PLOT FOR HOUSE FUNCTION
-          Are there more Democrats or Republicans running for House Elections?") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
-
-```
-
-
-
-
-
-
 
 
 
