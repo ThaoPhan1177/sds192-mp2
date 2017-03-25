@@ -10,13 +10,11 @@ output: html_document
 ## save changes, I pull & commit, Asmita will push.
 
 ```{r, warning=FALSE, message=FALSE}
-<<<<<<< HEAD
-=======
+
 #install.packages("shiny")
 #install.packages("htmlwidgets")
 #library(shiny)
 #library(htmlwidgets)
->>>>>>> 7c341668790cc02dbe00e1f372ee4a6987bae96b
 library(tidyverse)
 load("house_elections.rda")
 load("candidates.rda")
@@ -49,7 +47,7 @@ cand_ggPlot_func <- function( data, title){
 candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ) {
   candidates %>%
     filter( cand_party_affiliation == c( party1, party2 ) ) %>%
-    filter( cand_office_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    filter( cand_office_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ) ) %>%
     group_by( cand_office_state, cand_party_affiliation ) %>%
     summarise( n = n() )
 }
@@ -72,7 +70,11 @@ cand_ggPlot_func( top_10, "Candidate Party Affiliation in Top Ten Electoral Vote
 ```{r, warning=FALSE, message=FALSE}
 # Candidates in North Eastern States
 # States: CT MA ME NH NJ NY PA RI VT 
-north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0", s11 = "0" )
+north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0" )
+```
+
+```{r}
+
 ```
 
 ```{r}
