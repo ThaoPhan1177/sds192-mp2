@@ -74,6 +74,8 @@ north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "RI", s2 = "M
 cand_ggPlot_func( north_cand, "Candidate Party Affiliation in North Eastern States")
 ```
 
+### Analysis: In our data above we analyzed the candidate's party affiliation of the north eastern states. In an article analyzing the political affiliations of north eastern states written by political writer Lydia Saad, she stated that the east has a high concentration of heavily Democratic states. This is reportedly
+
 
 ```{r}
 ggplot( north_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
@@ -123,7 +125,7 @@ ggplot( top_10_cmte, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, w
 ```{r, warning=FALSE, message=FALSE}
 # Committees Party Affiliation in Northeastern States
 # States: AZ, CA, CO, ID, MO, NM, NV, OR, UT, WA, WY
-north_com <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0", s11 = "0"  )
+north_com <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0"  )
 ```
 
 ```{r}
@@ -142,54 +144,15 @@ ggplot( north_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, wid
 
 # BELOW IS ALL THE CODE WITHOUT THE FUNCTIONS
 
-# NOTE: I changed the order of the states in the filter() so that they are in alphabetical order
-# ABC ORDER: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
-cand1 <- candidates %>%
-  filter(cand_party_affiliation == c("DEM", "REP")) %>%
-  filter(cand_office_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
-  group_by(cand_party_affiliation, cand_office_state) %>%
-  summarise( n = n() )
-```
-
-```{r}
-ggplot( cand1, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Candidates in Top Ten Electoral Vote States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Candidate Party Affiliation") +
-  labs(x = "Candidate's Office State") +
-  labs(y = " # of Candidates in Each Party")
-
-```
-
-```{r, warning=FALSE, message=FALSE}
-com1 <- committees %>%
-  filter(cmte_party_affiliation == c("DEM", "REP")) %>%
-  filter(cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
-  group_by(cmte_party_affiliation, cmte_state) %>%
-  summarise( n = n() )
-```
-
-```{r}
-ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Committee Party Affiliation in Top Ten Electoral Vote States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Committee Party Affiliation") +
-  labs(x = "Committee's State") +
-  labs(y = " # of Committees in Each Party")
-
-```
-
-```{r, warning=FALSE, message=FALSE}
 party_affiliation <- house_elections %>%
   filter( party == c("D", "R") )%>%
   filter( state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
   group_by( party, state ) %>%
   summarise( n = n() )
 ```
+
+### Analysis 
+In the chart below, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis.  
 
 ```{r}
 ggplot(party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
@@ -201,10 +164,7 @@ ggplot(party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
   labs(x = "State & How Many Candidates Are in Each Party") +
   labs(y = " # Candidates in Each Party")
 
-
-# In the chart below, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis.  
 ```
-
 
 
 
@@ -218,9 +178,9 @@ joined_data <- committees %>%
 ```
 
 
-```{r, warning=FALSE, message=FALSE}
-# We wanted to see if the states with more committees in our "Committee Party Affiliation in Top Ten Electoral Vote States" graph also had more transactions and contributions. So we merged the two datasets so that we could only look at the contributions for committees in our Committee graph to keep the data consistent and parallel. 
+### We wanted to see if the states with more committees in our "Committee Party Affiliation in Top Ten Electoral Vote States" graph also had more transactions and contributions. So we merged the two datasets so that we could only look at the contributions for committees in our Committee graph to keep the data consistent and parallel. 
 
+```{r, warning=FALSE, message=FALSE}
 contrib_data <- joined_data %>%
   filter( cmte_party_affiliation == c("DEM", "REP") )%>%
   filter( cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
