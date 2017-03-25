@@ -85,8 +85,6 @@ ggplot( north_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliat
 
 ```
 
-#-----------------------------------#################--------------------------------------------------------------#
-
 
 ```{r}
 # FUNCTION 2: "committeesFunc"
@@ -136,14 +134,6 @@ ggplot( north_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, wid
   labs(x = "Committee's State") +
   labs(y = "# of Committees in Each Party")
 ```
-
-
-#-----------------------------------#################--------------------------------------------------------------#
-
-# ```{r, warning=FALSE, message=FALSE}
-# ggplotFunc( south_com, cmte_party_affiliation, cmte_state, "Committee Party Affiliation in Southern States", "Committee Party Affiliation", "Committee's State", "# of Committees in Each Party" )
-# ```
-
 
 
 ```{r, warning=FALSE, message=FALSE}
