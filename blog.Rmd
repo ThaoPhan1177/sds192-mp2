@@ -11,22 +11,75 @@ output: html_document
 
 ```{r, warning=FALSE, message=FALSE}
 install.packages( c("shiny", "htmlwidgets"))
-library(tidyverse)
 library(shiny)
 library(htmlwidgets)
+library(tidyverse)
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
 ```
 
+# below is a function I wrote. It's pretty self-explanatory when you look at it. 
+# s1, s2, s3, s4 etc. stands for the states 
+```{r}
+dataFunction <- function(data, party_col, state_col, party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+  data %>%
+    filter( party_col == c( party1, party2 ) ) %>%
+    filter( state_col == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    group_by( party_col, state_col ) %>%
+    summarise( n = n() )
+}
+```
+
+```{r}
+
+candidatesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+  candidates %>%
+    filter( cand_party_affiliation == c( party1, party2 ) ) %>%
+    filter( cand_office_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    group_by( cand_party_affiliation, cand_office_state ) %>%
+    summarise( n = n() )
+}
+```
+
+```{r}
+
+candidatesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+  candidates %>%
+    filter( cand_party_affiliation == c( party1, party2 ) ) %>%
+    filter( cand_office_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    group_by( cand_party_affiliation, cand_office_state ) %>%
+    summarise( n = n() )
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+test_Cand_Funct <- candidatesFunction( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "TX", s3 = "NY", s4 = "FL", s5 = "PA", s6 = "IL", s7  = "OH", s8 = "MI", s9 = "GA", s10 = "NC", s11 = "NJ" )
+```
+
+
+```{r}
+ggplot( hello, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Candidates in Top Ten Electoral Vote States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+```
+
+
 ```{r, warning=FALSE, message=FALSE}
 cand1 <- candidates %>%
   filter(cand_party_affiliation == c("DEM", "REP")) %>%
   filter(cand_office_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ")) %>%
   group_by(cand_party_affiliation, cand_office_state) %>%
-  summarise( n = n())
+  summarise( n = n() )
 ```
+
+
+
+
+
 
 ```{r}
 ggplot( cand1, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
@@ -43,6 +96,7 @@ com1 <- committees %>%
   group_by(cmte_party_affiliation, cmte_state) %>%
   summarise( n = n() )
 ```
+
 
 ```{r}
 ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5)) +
@@ -69,8 +123,6 @@ ggplot(data = party_affiliation, aes(x = state, y = n, fill = party, width = .5)
 ```
 
 # In the chart above, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis.  
-
-=======
 
 ```{r}
 contributions
