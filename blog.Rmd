@@ -5,9 +5,7 @@ date: "March 24, 2017"
 output: html_document
 ---
 
-
 ## Loading the data
-## save changes, I pull & commit, Asmita will push.
 
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
@@ -16,7 +14,6 @@ load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
 ```
-
 
 ```{r, warning=FALSE, message=FALSE}
 # FUNCTION 0: cand_ggPlot_func 
@@ -50,11 +47,12 @@ candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 
 
 ```{r, warning=FALSE, message=FALSE}
-# used candidatesFunction
+# Below we use the candidatesFunction
 
 # Candidate Party affiliation in Top Ten Electoral Vote States
 # States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
 top_10 <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA" )
+<<<<<<< HEAD
 
 #Background: We first used outside data to find the top 10 states with the most electoral votes because we thought that since they have the highest number of votes that they'd be a big influence on elections. We chose to focus on the Democratic and Republican parties because they're the most popular and most likely to win. We hypothesized that if a state is known to be more Democratic, then there'd be more Democrats running in that state than Republican candidates. 
 
@@ -62,6 +60,8 @@ top_10 <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", 
 
 
 
+=======
+>>>>>>> 74fe55f1fbff9a0b2cd58ce6e47d97efae420d6d
 ```
 
 
@@ -80,14 +80,26 @@ cand_ggPlot_func( north_cand, "Candidate Party Affiliation in North Eastern Stat
 ```
 
 
+```{r}
+ggplot( north_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Candidate Party Affiliation in North Eastern States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Candidate Party Affiliation") +
+  labs(x = "Candidate's Office State") +
+  labs(y = " # of Candidates in Each Party")
+
+```
+
 
 ```{r}
 # FUNCTION 2: "committeesFunc"
-# lets you compare any two parties in any 11 eleven states in committees data set
-committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+# lets you compare any two parties in any 10 eleven states in committees data set
+committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ) {
   committees %>%
     filter( cmte_party_affiliation == c( party1, party2 ) ) %>%
-    filter( cmte_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    filter( cmte_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ) ) %>%
     group_by( cmte_state, cmte_party_affiliation ) %>%
     summarise( n = n() )
 }
@@ -96,8 +108,8 @@ committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 
 ```{r, warning=FALSE, message=FALSE}
 # Committee Party affiliation in Top Ten Electoral Vote States
-# States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
-top_10_cmte <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA", s11 = "TX" )
+# States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA
+top_10_cmte <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA")
 ```
 
 ```{r}
@@ -210,16 +222,28 @@ joined_data <- committees %>%
    inner_join(contributions, by = "cmte_id")
 ```
 
+### We wanted to see if the states with more committees in our "Committee Party Affiliation in Top Ten Electoral Vote States" graph also had more transactions and contributions. So we merged the two datasets so that we could only look at the contributions for committees in our Committee graph to keep the data consistent and parallel. 
 ```{r, warning=FALSE, message=FALSE}
-filtered_data <- joined_data %>%
-  filter( cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) 
+contrib_data <- joined_data %>%
+  filter( cmte_party_affiliation == c("DEM", "REP") )%>%
+  filter( cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
+  group_by( cmte_state, cmte_party_affiliation ) %>%
+  summarise( n = sum(transaction_amt) )
+contrib_data
 ```
 
-```{r, warning=FALSE, message=FALSE}
-joined_data
+```{r}
+p <- ggplot(contrib_data, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Political Party") +
+  labs(x = "") +
+  labs(y = "")
+require(scales)
+p + scale_y_continuous(labels = comma)
 ```
-
-
 
 
 
