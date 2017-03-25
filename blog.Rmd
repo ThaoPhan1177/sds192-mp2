@@ -111,10 +111,6 @@ ggplot( top_10_cmte, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, w
 ```
 
 
-
-
-
-
 ```{r, warning=FALSE, message=FALSE}
 
 # BELOW IS ALL THE CODE WITHOUT THE FUNCTIONS
