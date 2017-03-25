@@ -64,8 +64,8 @@ cand_ggPlot_func( top_10, "Candidate Party Affiliation in Top Ten Electoral Vote
 
 ```{r, warning=FALSE, message=FALSE}
 # Candidates in North Eastern States
-# States: CT MA ME NH NJ NY PA RI VT 
-north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = NA )
+# States: RI MA ME NH NJ NY PA CT VT 
+north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "RI", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "CT", s9 = "VT", s10 = NA )
 ```
 
 ```{r}
