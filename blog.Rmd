@@ -17,6 +17,23 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
+
+```{r, warning=FALSE, message=FALSE}
+# FUNCTION 0: cand_ggPlot_func 
+# plots candidate data  
+cand_ggPlot_func <- function( data, title){
+  ggplot( data, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +  
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle(title) +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Candidate Party Affiliation" ) +
+  labs(x = "Candidate's Office State") +
+  labs(y = "# of Candidates in Each Party")
+}
+```
+
+
 ```{r}
 # FUNCTION 1: "candidatesFunc"
 # lets you compare candidate party affiliations for any two parties in any 11 eleven states in candidates data set
@@ -36,40 +53,49 @@ candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 # Below we use the candidatesFunction
 
 # Candidate Party affiliation in Top Ten Electoral Vote States
-# States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA
+# States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
 top_10 <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA" )
 ```
 
-```{r}
-ggplot( top_10, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Candidate Party Affiliation in Top Ten Electoral Vote States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Candidate Party Affiliation") +
-  labs(x = "Candidate's Office State") +
-  labs(y = " # of Candidates in Each Party")
-```
 
+```{r}
+cand_ggPlot_func( top_10, "Candidate Party Affiliation in Top Ten Electoral Vote States")
+```
 
 ```{r, warning=FALSE, message=FALSE}
 # Candidates in North Eastern States
-# States: RI MA ME NH NJ NY PA CT VT 
-north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "RI", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "CT", s9 = "VT", s10 = NA)
+# States: CT MA ME NH NJ NY PA RI VT 
+north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = NA )
 ```
 
 ```{r}
 cand_ggPlot_func( north_cand, "Candidate Party Affiliation in North Eastern States")
 ```
 
+
+```{r}
+ggplot( north_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Candidate Party Affiliation in North Eastern States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Candidate Party Affiliation") +
+  labs(x = "Candidate's Office State") +
+  labs(y = " # of Candidates in Each Party")
+
+```
+
+#-----------------------------------#################--------------------------------------------------------------#
+
+
 ```{r}
 # FUNCTION 2: "committeesFunc"
 # lets you compare any two parties in any 11 eleven states in committees data set
-committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10) {
+committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
   committees %>%
     filter( cmte_party_affiliation == c( party1, party2 ) ) %>%
-    filter( cmte_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10) ) %>%
-    group_by( cmte_party_affiliation, cmte_state ) %>%
+    filter( cmte_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    group_by( cmte_state, cmte_party_affiliation ) %>%
     summarise( n = n() )
 }
 ```
@@ -78,7 +104,7 @@ committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 ```{r, warning=FALSE, message=FALSE}
 # Committee Party affiliation in Top Ten Electoral Vote States
 # States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
-top_10_cmte <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA")
+top_10_cmte <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA", s11 = "TX" )
 ```
 
 ```{r}
@@ -112,19 +138,13 @@ ggplot( north_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, wid
 ```
 
 
-```{r, warning=FALSE, message=FALSE}
-# Write a function for ggplot 
-ggplotFunc<- function( data, party, state, title, legendName, xLabel, yLabel){
-  ggplot( data, aes(x = state, y = n, fill = party, width = .5)) +  
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle(title) +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = legendName ) +
-  labs(x = xLabel) +
-  labs(y = yLabel)
-}
-```
+#-----------------------------------#################--------------------------------------------------------------#
+
+# ```{r, warning=FALSE, message=FALSE}
+# ggplotFunc( south_com, cmte_party_affiliation, cmte_state, "Committee Party Affiliation in Southern States", "Committee Party Affiliation", "Committee's State", "# of Committees in Each Party" )
+# ```
+
+
 
 ```{r, warning=FALSE, message=FALSE}
 
@@ -206,24 +226,15 @@ joined_data <- committees %>%
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-contrib_data <- joined_data %>%
-  filter(cmte_party_affiliation == c("DEM", "REP")) %>%
-  filter(cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
-  group_by(cmte_party_affiliation, cmte_state) %>%
-  summarise( n = sum(transaction_amt) )
-contrib_data
+filtered_data <- joined_data %>%
+  filter( cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) 
 ```
 
-```{r}
-ggplot(contrib_data, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Political Party") +
-  labs(x = "") +
-  labs(y = " ")
+```{r, warning=FALSE, message=FALSE}
+joined_data
 ```
+
+
 
 
 
