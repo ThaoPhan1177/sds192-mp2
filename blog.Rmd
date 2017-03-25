@@ -15,9 +15,12 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
+### Background for our Candidates dataset analysis
+
+We first used outside data to find the top 10 states with the most electoral votes because we thought that since they have the highest number of votes that they'd be a big influence on elections. We chose to focus on the Democratic and Republican parties because they're the most popular and most likely to win. We hypothesized that if a state is known to be more Democratic, then there'd be more Democrats running in that state than Republican candidates. 
+
 ```{r, warning=FALSE, message=FALSE}
-# FUNCTION 0: cand_ggPlot_func 
-# plots candidate data  
+#function for making ggplot
 cand_ggPlot_func <- function( data, title){
   ggplot( data, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +  
   geom_bar(stat = "identity", position = position_dodge()) +
@@ -30,12 +33,8 @@ cand_ggPlot_func <- function( data, title){
 }
 ```
 
-
 ```{r}
-# FUNCTION 1: "candidatesFunc"
-# lets you compare candidate party affiliations for any two parties in any 11 eleven states in candidates data set
-# s1, s2, s3, s4 etc. stands for the states 
-
+#function for candidates dataset
 candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ) {
   candidates %>%
     filter( cand_party_affiliation == c( party1, party2 ) ) %>%
@@ -45,24 +44,28 @@ candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 }
 ```
 
-
 ```{r, warning=FALSE, message=FALSE}
-# Below we use the candidatesFunction
-
-# Candidate Party affiliation in Top Ten Electoral Vote States
+# Below we use the candidates function
 # States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
 top_10 <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA" )
+<<<<<<< HEAD
+=======
 
 #Background: We first used outside data to find the top 10 states with the most electoral votes because we thought that since they have the highest number of votes that they'd be a big influence on elections. We chose to focus on the Democratic and Republican parties because they're the most popular and most likely to win. We hypothesized that if a state is known to be more Democratic, then there'd be more Democrats running in that state than Republican candidates. 
 
 # Analysis of ggplot: In our ggplot for the top 10 electoral vote states, we thought that since California and Pennsylvania is known to be more Democratic than Republican, that this would be seen in our data visualization. Our hypothesis turned out to be correct with both states having more Democratic candidates than Republicans. What's interesting is Illinois which we thought leaned more Republican than Democratic. It was interesting to see that there were much more Democratic candidates running than Republicans. This could be an error in our data set.
 
+>>>>>>> 06c1b77f65e1236b0b464b173fd97a1df65aa075
 ```
-
 
 ```{r}
 cand_ggPlot_func( top_10, "Candidate Party Affiliation in Top Ten Electoral Vote States")
 ```
+
+### Analysis of ggplot 
+
+In our ggplot for the top 10 electoral vote states, we thought that since California and Pennsylvania are known to be more Democratic than Republican, there would be more Democratic candidates. Our hypothesis turned out to be correct with both states having more Democratic candidates than Republicans. What's interesting is that Illinois, which we thought to be more Republican but has more Democratic candidates. Our interpretation was that due to strong support for one of the Republican candidates in the state, many people choose not to run, whereas Democratic candidates take their chances.
+
 
 ```{r, warning=FALSE, message=FALSE}
 # Candidates in North Eastern States
