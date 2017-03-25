@@ -11,10 +11,6 @@ output: html_document
 
 ```{r, warning=FALSE, message=FALSE}
 
-#install.packages("shiny")
-#install.packages("htmlwidgets")
-#library(shiny)
-#library(htmlwidgets)
 library(tidyverse)
 load("house_elections.rda")
 load("candidates.rda")
@@ -70,11 +66,7 @@ cand_ggPlot_func( top_10, "Candidate Party Affiliation in Top Ten Electoral Vote
 ```{r, warning=FALSE, message=FALSE}
 # Candidates in North Eastern States
 # States: CT MA ME NH NJ NY PA RI VT 
-north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0" )
-```
-
-```{r}
-
+north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = NA )
 ```
 
 ```{r}
