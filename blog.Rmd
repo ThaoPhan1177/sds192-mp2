@@ -5,9 +5,8 @@ date: "March 24, 2017"
 output: html_document
 ---
 
-## Loading the data
-
 ```{r, warning=FALSE, message=FALSE}
+#loading the data
 library(tidyverse)
 load("house_elections.rda")
 load("candidates.rda")
