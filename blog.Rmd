@@ -47,7 +47,7 @@ candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
   candidates %>%
     filter( cand_party_affiliation == c( party1, party2 ) ) %>%
     filter( cand_office_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
-    group_by( cand_party_affiliation, cand_office_state ) %>%
+    group_by( cand_office_state, cand_party_affiliation ) %>%
     summarise( n = n() )
 }
 ```
@@ -72,11 +72,9 @@ cand_ggPlot_func( top_10, "Candidate Party Affiliation in Top Ten Electoral Vote
 north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0", s11 = "0" )
 ```
 
-
 ```{r}
 cand_ggPlot_func( north_cand, "Candidate Party Affiliation in North Eastern States")
 ```
-
 
 
 ```{r}
@@ -101,7 +99,7 @@ committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
   committees %>%
     filter( cmte_party_affiliation == c( party1, party2 ) ) %>%
     filter( cmte_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
-    group_by( cmte_party_affiliation, cmte_state ) %>%
+    group_by( cmte_state, cmte_party_affiliation ) %>%
     summarise( n = n() )
 }
 ```
@@ -146,26 +144,9 @@ ggplot( north_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, wid
 
 #-----------------------------------#################--------------------------------------------------------------#
 
-```{r, warning=FALSE, message=FALSE}
-# Write a function for ggplot 
-ggplotFunc<- function( data, party, state, title, legendName, xLabel, yLabel){
-  ggplot( data, aes(x = state, y = n, fill = party, width = .5)) +  
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle(title) +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = legendName ) +
-  labs(x = xLabel) +
-  labs(y = yLabel)
-}
-```
-
 # ```{r, warning=FALSE, message=FALSE}
 # ggplotFunc( south_com, cmte_party_affiliation, cmte_state, "Committee Party Affiliation in Southern States", "Committee Party Affiliation", "Committee's State", "# of Committees in Each Party" )
 # ```
-
-
-
 
 
 
