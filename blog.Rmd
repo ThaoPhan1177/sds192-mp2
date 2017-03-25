@@ -44,10 +44,39 @@ test_Cand_Funct <- candidatesFunction( party1 = "DEM", party2 = "REP", s1 = "CA"
 ggplot( test_Cand_Funct, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
-  ggtitle("Candidates in Top Ten Electoral Vote States") +
+  ggtitle("TEST GRAPH FOR COMMITTEE FUNCTION: 
+          Candidates in Top Ten Electoral Vote States") +
   scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
 ```
 
+
+# Candidates in Southern States
+```{r, warning=FALSE, message=FALSE}
+south_cand <- candidatesFunction( party1 = "DEM", party2 = "REP", s1 = "AL", s2 = "KY", s3 = "MS", s4 = "TN", s5 = "AR", s6 = "LA", s7  = "TX", s8 = "GA", s9 = "FL", s10 = "VA", s11 = "NC" )
+```
+
+```{r}
+ggplot( south_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Candidates in Southern States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+```
+
+
+
+# Candidates in Western States
+```{r, warning=FALSE, message=FALSE}
+mount_cand <- candidatesFunction( party1 = "DEM", party2 = "REP", s1 = "MO", s2 = "WY", s3 = "CO", s4 = "NM", s5 = "ID", s6 = "UT", s7  = "AZ", s8 = "NV", s9 = "WA", s10 = "OR", s11 = "CA" )
+```
+
+```{r}
+ggplot( mount_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Candidates in Western States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+```
 
 
 
@@ -69,7 +98,13 @@ committeesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, 
 test_Commit_Funct <- committeesFunction( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "TX", s3 = "NY", s4 = "FL", s5 = "PA", s6 = "IL", s7  = "OH", s8 = "MI", s9 = "GA", s10 = "NC", s11 = "NJ" )
 ```
 
-
+```{r}
+ggplot( test_Commit_Funct, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5) ) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("TEST GRAPH FOR COMMITTEE FUNCTION") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+```
 
 
 
@@ -92,6 +127,16 @@ houseFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s
 test_House_Funct <- houseFunction( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "TX", s3 = "NY", s4 = "FL", s5 = "PA", s6 = "IL", s7  = "OH", s8 = "MI", s9 = "GA", s10 = "NC", s11 = "NJ" )
 ```
 
+```{r} 
+# For some reason, this ggplot does not work. I'm not sure why. 
+ggplot( test_House_Funct, aes(x = state, y = n, fill = party, width = .5) ) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("TEST PLOT FOR HOUSE FUNCTION
+          Are there more Democrats or Republicans running for House Elections?") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+
+```
 
 
 
@@ -103,6 +148,8 @@ test_House_Funct <- houseFunction( party1 = "DEM", party2 = "REP", s1 = "CA", s2
 
 
 
+
+# BELOW IS ALL THE CODE WITHOUT THE FUNCTIONS
 ```{r, warning=FALSE, message=FALSE}
 cand1 <- candidates %>%
   filter(cand_party_affiliation == c("DEM", "REP")) %>%
@@ -127,64 +174,56 @@ com1 <- committees %>%
   summarise( n = n() )
 ```
 
-
 ```{r}
+ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Committee graph") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+```
+
+```{r, warning=FALSE, message=FALSE}
 party_affiliation <- house_elections %>%
   filter( party == c("D", "R") )%>%
   filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
-  group_by(party, state) %>%
+  group_by( party, state ) %>%
   summarise( n = n() )
 ```
 
 ```{r}
-ggplot(data = party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
+ggplot(party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
   ggtitle("Are there more Democrats or Republicans running for House Elections?") +
   scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
-```
 
 # In the chart above, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis.  
-
-```{r}
-contributions
 ```
 
-```{r}
 
+
+
+
+
+
+# JOINED DATA
+```{r}
 #rm(contributions, committees)
 joined_data <- committees %>%
    inner_join(contributions, by = "cmte_id")
-
 ```
 
 ```{r}
 filtered_data <- joined_data %>%
   filter( cmte_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) 
-
 ```
 
 ```{r}
 joined_data
 ```
 
-```{r}
-
-```
 
 
-
-```{r}
-amt_contributed <- contributions %>%
-  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
-  select( state, transaction_amt, name ) %>%
-  arrange( desc(name) )
-
-amt_contributed
-
-most_amt <- ggplot(data = amt_contributed, aes( x = name )) + geom_bar() +
-  labs(title = "Comparison of Contributions to Committees in Massachusetts", x = "committee receiving contribution", y = "# of ppl/businesses contributing money") 
->>>>>>> 799130b8f71a05c19522301c149bbbd92bc7e759
 
 
 
