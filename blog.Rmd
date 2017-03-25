@@ -110,10 +110,13 @@ ggplot( top_10_cmte, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, w
 
 ```
 
+#Analysis
 
+Our hypothesis was pretty accurate! California does have the most committees and Florida does have more Republican committees. However, our hypothesis is not consistent for all the states. For example, California should have more Democratic committees by our logic but that is not the case. And North Carolina and Ohio have zero Democratic committees! While we can see that they do have more Republican candidates, this is still surprising. It is also surprising that Pennsylvania has so many Republican committees considering the state is known to be more Democratic. 
 
+#Background for House Elections dataset
 
-
+In order to keep our comparisons consistent in our project, we did the same thing with the House Elections dataset. We again plotted for top ten states and the two major political parties. We predicted that if there are more registered candidates from a certain party in a certain state, there should be more candidates running for House Elections from that party in that state. So more democrats from California and more Republicans from Florida and so on.
 
 ```{r, warning=FALSE, message=FALSE}
 
@@ -121,7 +124,7 @@ ggplot( top_10_cmte, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, w
 
 party_affiliation <- house_elections %>%
   filter( party == c("D", "R") )%>%
-  filter( state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
+  filter( state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA")) %>%
   group_by( party, state ) %>%
   summarise( n = n() )
 ```
@@ -140,7 +143,7 @@ ggplot(party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
 
 ### Analysis 
 
-In the chart below, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis. 
+Our hypothesis was true for Florida but not for California. It seems that running for House Elections has more to do with Committees instead, as it is more parallel to that graph. For example, in both the graphs there are only Republicans for North Carolina and Ohio, and the majorities are also almost all consistent. 
 
 ### Background for our Contributions dataset analysis 
 
