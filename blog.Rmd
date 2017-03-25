@@ -50,11 +50,16 @@ candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 
 
 ```{r, warning=FALSE, message=FALSE}
-# Below we use the candidatesFunction
+# used candidatesFunction
 
 # Candidate Party affiliation in Top Ten Electoral Vote States
 # States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
 top_10 <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA" )
+
+#Background: We first used outside data to find the top 10 states with the most electoral votes because we thought that since they have the highest number of votes that they'd be a big influence on elections. We chose to focus on the Democratic and Republican parties because they're the most popular and most likely to win. We hypothesized that if a state is known to be more Democratic, then there'd be more Democrats running in that state than Republican candidates. 
+
+# Analysis of ggplot: In our ggplot for the top 10 electoral vote states, we thought that since California and Pennsylvania is known to be more Democratic than Republican, that this would be seen in our data visualization. Our hypothesis turned out to be correct with both states having more Democratic candidates than Republicans. What's interesting is Illinois which we thought leaned more Republican than Democratic. It was interesting to see that there were much more Democratic candidates running than Republicans. This could be an error in our data set.
+
 ```
 
 
@@ -72,18 +77,6 @@ north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "RI", s2 = "M
 cand_ggPlot_func( north_cand, "Candidate Party Affiliation in North Eastern States")
 ```
 
-
-```{r}
-ggplot( north_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Candidate Party Affiliation in North Eastern States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Candidate Party Affiliation") +
-  labs(x = "Candidate's Office State") +
-  labs(y = " # of Candidates in Each Party")
-
-```
 
 
 ```{r}
