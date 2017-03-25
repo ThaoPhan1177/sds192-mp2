@@ -10,25 +10,159 @@ output: html_document
 ## save changes, I pull & commit, Asmita will push.
 
 ```{r, warning=FALSE, message=FALSE}
-install.packages( c("shiny", "htmlwidgets"))
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-library(tidyverse)
+#install.packages("shiny")
+#install.packages("htmlwidgets")
 library(shiny)
 library(htmlwidgets)
+library(tidyverse)
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
 ```
 
+```{r}
+# FUNCTION 1: "candidatesFunc"
+# lets you compare candidate party affiliations for any two parties in any 11 eleven states in candidates data set
+# s1, s2, s3, s4 etc. stands for the states 
+
+candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+  candidates %>%
+    filter( cand_party_affiliation == c( party1, party2 ) ) %>%
+    filter( cand_office_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    group_by( cand_party_affiliation, cand_office_state ) %>%
+    summarise( n = n() )
+}
+```
+
+
 ```{r, warning=FALSE, message=FALSE}
+# Below we use the candidatesFunction
+
+# Candidate Party affiliation in Top Ten Electoral Vote States
+# States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
+top_10 <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA", s11 = "TX" )
+```
+
+```{r}
+ggplot( top_10, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Candidate Party Affiliation in Top Ten Electoral Vote States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Candidate Party Affiliation") +
+  labs(x = "Candidate's Office State") +
+  labs(y = " # of Candidates in Each Party")
+```
+
+
+```{r, warning=FALSE, message=FALSE}
+# Candidates in North Eastern States
+# States: CT MA ME NH NJ NY PA RI VT 
+north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0", s11 = "0" )
+```
+
+```{r}
+ggplot( north_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Candidate Party Affiliation in North Eastern States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Candidate Party Affiliation") +
+  labs(x = "Candidate's Office State") +
+  labs(y = " # of Candidates in Each Party")
+
+```
+
+#-----------------------------------#################--------------------------------------------------------------#
+
+
+```{r}
+# FUNCTION 2: "committeesFunc"
+# lets you compare any two parties in any 11 eleven states in committees data set
+committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+  committees %>%
+    filter( cmte_party_affiliation == c( party1, party2 ) ) %>%
+    filter( cmte_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    group_by( cmte_party_affiliation, cmte_state ) %>%
+    summarise( n = n() )
+}
+```
+
+
+```{r, warning=FALSE, message=FALSE}
+# Committee Party affiliation in Top Ten Electoral Vote States
+# States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
+top_10_cmte <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA", s11 = "TX" )
+```
+
+```{r}
+ggplot( top_10_cmte, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5) ) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Committee Party Affiliation in Top Ten Electoral Vote States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Committee Party Affiliation") +
+  labs(x = "Committee's State") +
+  labs(y = "# of Committees in Each Party")
+
+```
+
+
+```{r, warning=FALSE, message=FALSE}
+# Committees Party Affiliation in Northeastern States
+# States: AZ, CA, CO, ID, MO, NM, NV, OR, UT, WA, WY
+north_com <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0", s11 = "0"  )
+```
+
+```{r}
+ggplot( north_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5) ) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Committee Party Affiliation in Northeastern States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Committee Party Affiliation") +
+  labs(x = "Committee's State") +
+  labs(y = "# of Committees in Each Party")
+```
+
+
+#-----------------------------------#################--------------------------------------------------------------#
+
+```{r, warning=FALSE, message=FALSE}
+# Write a function for ggplot 
+ggplotFunc<- function( data, party, state, title, legendName, xLabel, yLabel){
+  ggplot( data, aes(x = state, y = n, fill = party, width = .5)) +  
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle(title) +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = legendName ) +
+  labs(x = xLabel) +
+  labs(y = yLabel)
+}
+```
+
+# ```{r, warning=FALSE, message=FALSE}
+# ggplotFunc( south_com, cmte_party_affiliation, cmte_state, "Committee Party Affiliation in Southern States", "Committee Party Affiliation", "Committee's State", "# of Committees in Each Party" )
+# ```
+
+
+
+
+
+
+```{r, warning=FALSE, message=FALSE}
+
+# BELOW IS ALL THE CODE WITHOUT THE FUNCTIONS
+
+# NOTE: I changed the order of the states in the filter() so that they are in alphabetical order
+# ABC ORDER: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
 cand1 <- candidates %>%
   filter(cand_party_affiliation == c("DEM", "REP")) %>%
-  filter(cand_office_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ")) %>%
+  filter(cand_office_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
   group_by(cand_party_affiliation, cand_office_state) %>%
-  summarise( n = n())
+  summarise( n = n() )
 ```
 
 ```{r}
@@ -36,60 +170,79 @@ ggplot( cand1, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, 
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
   ggtitle("Candidates in Top Ten Electoral Vote States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Candidate Party Affiliation") +
+  labs(x = "Candidate's Office State") +
+  labs(y = " # of Candidates in Each Party")
+
 ```
 
 ```{r, warning=FALSE, message=FALSE}
 com1 <- committees %>%
   filter(cmte_party_affiliation == c("DEM", "REP")) %>%
-  filter(cmte_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ")) %>%
+  filter(cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
   group_by(cmte_party_affiliation, cmte_state) %>%
-  summarise( n = n())
+  summarise( n = n() )
 ```
 
 ```{r}
 ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
-  ggtitle("Committees in Top Ten Electoral Vote States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+  ggtitle("Committee Party Affiliation in Top Ten Electoral Vote States") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Committee Party Affiliation") +
+  labs(x = "Committee's State") +
+  labs(y = " # of Committees in Each Party")
+
 ```
 
 ```{r, warning=FALSE, message=FALSE}
 party_affiliation <- house_elections %>%
   filter( party == c("D", "R") )%>%
-  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
-  group_by(party, state) %>%
+  filter( state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
+  group_by( party, state ) %>%
   summarise( n = n() )
 ```
 
 ```{r}
-ggplot(data = party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
+ggplot(party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
-  ggtitle("Are Democrats or Republicans More Popular in House Elections?") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+  ggtitle("Are there more Democrats or Republicans running for House Elections?") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
+  labs( fill = "Political Party") +
+  labs(x = "State & How Many Candidates Are in Each Party") +
+  labs(y = " # Candidates in Each Party")
+
+
+# In the chart below, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis.  
 ```
 
-# In the chart above, we analyzed the political party affiliations of the 2011-2012 Massachusetts House of Representative candidates. What we found was that out of the 32 candidates during the 2011-2012 cycle, the majority of them were either part of the Democratic or Republican party. This makes sense because the United States politics is dominated by a two-party system in which the Democrats and Republicans are the most popular. In Massachusetts, besides those 2 parties, some House candidates were in the Independent or Libertarian parties as well; however, they made up only 4 out of the 32 candidates. 
-
-```{r}
-amt_contributed <- contributions %>%
-  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
-  select( state, transaction_amt, name ) %>%
-  arrange( desc(name) )
-
-amt_contributed
-
-most_amt <- ggplot(data = amt_contributed, aes( x = name )) + geom_bar() +
-  labs(title = "Comparison of Contributions to Committees in Massachusetts", x = "committee receiving contribution", y = "# of ppl/businesses contributing money") 
-
-most_amt 
-
-# The following chart  below shows committees in Massachuset tsthat received monetary contributions from individual supporters. As you can see, there are many committees that did not receive many contributions at all (less than 250 individuals/businesses donated $ to the committee) and approximately 9 committees that receieved contributions from 250 or more individuals. There were 2 committees that received more than 750 contributions showing their popularity. They must have done something positive in Massachusetts to have gotten so many donations
 
 
+
+```{r, warning=FALSE, message=FALSE}
+
+# JOINED DATA
+
+#rm(contributions, committees)
+joined_data <- committees %>%
+   inner_join(contributions, by = "cmte_id")
 ```
+
+```{r, warning=FALSE, message=FALSE}
+filtered_data <- joined_data %>%
+  filter( cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) 
+```
+
+```{r, warning=FALSE, message=FALSE}
+joined_data
+```
+
+
+
+
 
 
 
