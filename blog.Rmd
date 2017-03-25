@@ -22,18 +22,10 @@ load("contributions.rda")
 
 # below is a function I wrote. It's pretty self-explanatory when you look at it. 
 # s1, s2, s3, s4 etc. stands for the states 
-```{r}
-dataFunction <- function(data, party_col, state_col, party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
-  data %>%
-    filter( party_col == c( party1, party2 ) ) %>%
-    filter( state_col == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
-    group_by( party_col, state_col ) %>%
-    summarise( n = n() )
-}
-```
+
 
 ```{r}
-
+# this function lets you compare any two parties in any 11 eleven different states in the candidates data set
 candidatesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
   candidates %>%
     filter( cand_party_affiliation == c( party1, party2 ) ) %>%
@@ -42,6 +34,23 @@ candidatesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, 
     summarise( n = n() )
 }
 ```
+
+```{r}
+# this function lets you compare any two parties in any 11 eleven different states in the committees data set
+committeesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+  committees %>%
+    filter( cmte_party_affiliation == c( party1, party2 ) ) %>%
+    filter( cmte_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    group_by( cmte_party_affiliation, cmte_state ) %>%
+    summarise( n = n() )
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+test_Commit_Funct <- committeesFunction( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "TX", s3 = "NY", s4 = "FL", s5 = "PA", s6 = "IL", s7  = "OH", s8 = "MI", s9 = "GA", s10 = "NC", s11 = "NJ" )
+```
+
+
 
 ```{r}
 
@@ -60,7 +69,7 @@ test_Cand_Funct <- candidatesFunction( party1 = "DEM", party2 = "REP", s1 = "CA"
 
 
 ```{r}
-ggplot( hello, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
+ggplot( test_Cand_Funct, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
   theme_minimal() +
   ggtitle("Candidates in Top Ten Electoral Vote States") +
@@ -75,11 +84,6 @@ cand1 <- candidates %>%
   group_by(cand_party_affiliation, cand_office_state) %>%
   summarise( n = n() )
 ```
-
-
-
-
-
 
 ```{r}
 ggplot( cand1, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
