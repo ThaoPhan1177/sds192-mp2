@@ -102,6 +102,7 @@ committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 # Committee Party affiliation in Top Ten Electoral Vote States
 # States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA
 top_10_cmte <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA")
+top_10_cmte
 ```
 
 ```{r}
@@ -147,6 +148,7 @@ party_affiliation <- house_elections %>%
 ```
 
 ### Analysis 
+
 In the chart below, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis.  
 
 ```{r}
@@ -161,27 +163,22 @@ ggplot(party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
 
 ```
 
+### Background for our Contributions dataset analysis 
 
+We wanted to see if the states with more committees in our "Committee Party Affiliation in Top Ten Electoral Vote States" graph also had more transactions and contributions. So we merged the two datasets so that we could only look at the contributions for committees in our Committee graph to keep the data consistent and parallel. Our hypothesis was that if the state has more committees they will have more transactions and contributions. 
 
 ```{r, warning=FALSE, message=FALSE}
-
 # JOINED DATA
-
-#rm(contributions, committees)
 joined_data <- committees %>%
    inner_join(contributions, by = "cmte_id")
 ```
 
-
-### We wanted to see if the states with more committees in our "Committee Party Affiliation in Top Ten Electoral Vote States" graph also had more transactions and contributions. So we merged the two datasets so that we could only look at the contributions for committees in our Committee graph to keep the data consistent and parallel. 
-
 ```{r, warning=FALSE, message=FALSE}
 contrib_data <- joined_data %>%
   filter( cmte_party_affiliation == c("DEM", "REP") )%>%
-  filter( cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA", "TX")) %>%
+  filter( cmte_state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA")) %>%
   group_by( cmte_state, cmte_party_affiliation ) %>%
   summarise( n = sum(transaction_amt) )
-contrib_data
 ```
 
 ```{r}
@@ -196,6 +193,11 @@ p <- ggplot(contrib_data, aes(x = cmte_state, y = n, fill = cmte_party_affiliati
 require(scales)
 p + scale_y_continuous(labels = comma)
 ```
+
+#Analysis of ggplot
+
+Our hypothesis seems incorrect. It seems like transactions are influenced by where there are more businesses and cities. For example, New York has an average number of committees but the transactions are a huge outlier. Our immediate thought was that Trump Tower is in New York! We did not know much about Michigan to guess why it is an outlier too. 
+
 
 
 
