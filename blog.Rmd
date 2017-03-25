@@ -55,37 +55,30 @@ cand_ggPlot_func( top_10, "Candidate Party Affiliation in Top Ten Electoral Vote
 ```
 
 ### Analysis of ggplot 
+
 In our ggplot for the top 10 electoral vote states, we thought that since California and Pennsylvania are known to be more Democratic than Republican, there would be more Democratic candidates. Our hypothesis turned out to be correct with both states having more Democratic candidates than Republicans. What's interesting is that Illinois, which we thought to be more Republican but has more Democratic candidates. Our interpretation was that due to strong support for one of the Republican candidates in the state, many people choose not to run, whereas Democratic candidates take their chances.
+
+### Background for Candidates dataset analysis - Plot 2
+
+In our data below, we analyzed the candidate's party affiliation of the north eastern states. In an article about the political affiliations of north eastern states written by political writer Lydia Saad, she stated that the east has a high concentration of heavily Democratic states. She thinks that this is due to the waning popularity of Republican President George W. Bush in 2008, the economic crisis that erupted that year, and the growing popularity and appeal of Barach Obama late in the presidential campaign that led to Democrats having more support. Anyway, we analyzed the northeastern states to see if they popularity was true. 
 
 ```{r, warning=FALSE, message=FALSE}
 # Candidates in North Eastern States
-# States: RI MA ME NH NJ NY PA CT VT 
-north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "RI", s2 = "MA", s3 = "ME", s4 = "PA", s5 = "NJ", s6 = "NY", s7  = "NH", s8 = "CT", s9 = "VT", s10 = NA )
+# States: RI MA ME NH NY PA CT VT 
+north_cand <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "RI", s2 = "MA", s3 = "ME", s4 = "PA", s5 = "NY", s6  = "NH", s7 = "CT", s8 = "VT", s9 = NA , s10 = NA)
 ```
-
-### Background for plot 2
-In our data below, we analyzed the candidate's party affiliation of the north eastern states. In an article about the political affiliations of north eastern states written by political writer Lydia Saad, she stated that the east has a high concentration of heavily Democratic states. She thinks that this is due to the waning popularity of Republican President George W. Bush in 2008, the economic crisis that erupted that year, and the growing popularity and appeal of Barach Obama late in the presidential campaign that led to Democrats having more support. Anyway, we analyzed the northeastern states to see if they popularity was true. 
 
 ```{r}
 cand_ggPlot_func( north_cand, "Candidate Party Affiliation in North Eastern States")
 ```
 
 ### Analysis
+
 In our findings, we saw that while there definitely were candidates running for the Democratic party, for some states (MA) and (NY), they had more Republican candidates running. NH and VT apparently had no Democratic candidates at all which seems inaccurate. However, we will chalk this up to the errors that could potentially be on our part. 
 
+### Background for Committees dataset analysis
 
-```{r}
-ggplot( north_cand, aes(x = cand_office_state, y = n, fill = cand_party_affiliation, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Candidate Party Affiliation in North Eastern States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Candidate Party Affiliation") +
-  labs(x = "Candidate's Office State") +
-  labs(y = " # of Candidates in Each Party")
-
-```
-
+Next we were wondering if the states with more candidates running from a party also had more committees affiliated to that party, and states with more candidates overall had more committees as well. We hypothesized that California should have the most committees since they have the most candidates from the two parties registered. We also hypothesized that Florida should have more Republican committees than Democratic committees.
 
 ```{r}
 # FUNCTION 2: "committeesFunc"
@@ -99,12 +92,10 @@ committeesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 }
 ```
 
-
 ```{r, warning=FALSE, message=FALSE}
 # Committee Party affiliation in Top Ten Electoral Vote States
 # States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA
 top_10_cmte <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA")
-top_10_cmte
 ```
 
 ```{r}
@@ -120,22 +111,8 @@ ggplot( top_10_cmte, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, w
 ```
 
 
-```{r, warning=FALSE, message=FALSE}
-# Committees Party Affiliation in Northeastern States
-# States: AZ, CA, CO, ID, MO, NM, NV, OR, UT, WA, WY
-north_com <- committeesFunc( party1 = "DEM", party2 = "REP", s1 = "CT", s2 = "MA", s3 = "ME", s4 = "NH", s5 = "NJ", s6 = "NY", s7  = "PA", s8 = "RI", s9 = "VT", s10 = "0"  )
-```
 
-```{r}
-ggplot( north_com, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5) ) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Committee Party Affiliation in Northeastern States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2"))) +
-  labs( fill = "Committee Party Affiliation") +
-  labs(x = "Committee's State") +
-  labs(y = "# of Committees in Each Party")
-```
+
 
 
 ```{r, warning=FALSE, message=FALSE}
@@ -149,10 +126,6 @@ party_affiliation <- house_elections %>%
   summarise( n = n() )
 ```
 
-### Analysis 
-
-In the chart below, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis.  
-
 ```{r}
 ggplot(party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
   geom_bar(stat = "identity", position = position_dodge()) +
@@ -164,6 +137,10 @@ ggplot(party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
   labs(y = " # Candidates in Each Party")
 
 ```
+
+### Analysis 
+
+In the chart below, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis. 
 
 ### Background for our Contributions dataset analysis 
 
