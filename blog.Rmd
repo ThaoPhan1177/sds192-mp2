@@ -43,7 +43,7 @@ cand_ggPlot_func <- function( data, title){
 # lets you compare candidate party affiliations for any two parties in any 11 eleven states in candidates data set
 # s1, s2, s3, s4 etc. stands for the states 
 
-candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ) {
   candidates %>%
     filter( cand_party_affiliation == c( party1, party2 ) ) %>%
     filter( cand_office_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
@@ -58,7 +58,7 @@ candidatesFunc <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, 
 
 # Candidate Party affiliation in Top Ten Electoral Vote States
 # States: CA, FL, GA, IL, MI, NC, NJ, NY, OH, PA, TX
-top_10 <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA", s11 = "TX" )
+top_10 <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", s3 = "GA", s4 = "IL", s5 = "MI", s6 = "NC", s7  = "NJ", s8 = "NY", s9 = "OH", s10 = "PA" )
 ```
 
 
