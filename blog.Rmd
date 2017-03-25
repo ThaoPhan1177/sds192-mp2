@@ -60,6 +60,8 @@ top_10 <- candidatesFunc( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "FL", 
 
 # Analysis of ggplot: In our ggplot for the top 10 electoral vote states, we thought that since California and Pennsylvania is known to be more Democratic than Republican, that this would be seen in our data visualization. Our hypothesis turned out to be correct with both states having more Democratic candidates than Republicans. What's interesting is Illinois which we thought leaned more Republican than Democratic. It was interesting to see that there were much more Democratic candidates running than Republicans. This could be an error in our data set.
 
+
+
 ```
 
 
