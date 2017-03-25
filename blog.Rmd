@@ -25,35 +25,7 @@ load("contributions.rda")
 
 
 ```{r}
-# this function lets you compare any two parties in any 11 eleven different states in the candidates data set
-candidatesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
-  candidates %>%
-    filter( cand_party_affiliation == c( party1, party2 ) ) %>%
-    filter( cand_office_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
-    group_by( cand_party_affiliation, cand_office_state ) %>%
-    summarise( n = n() )
-}
-```
-
-```{r}
-# this function lets you compare any two parties in any 11 eleven different states in the committees data set
-committeesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
-  committees %>%
-    filter( cmte_party_affiliation == c( party1, party2 ) ) %>%
-    filter( cmte_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
-    group_by( cmte_party_affiliation, cmte_state ) %>%
-    summarise( n = n() )
-}
-```
-
-```{r, warning=FALSE, message=FALSE}
-test_Commit_Funct <- committeesFunction( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "TX", s3 = "NY", s4 = "FL", s5 = "PA", s6 = "IL", s7  = "OH", s8 = "MI", s9 = "GA", s10 = "NC", s11 = "NJ" )
-```
-
-
-
-```{r}
-
+# FUNCTION 1: lets you compare any two parties in any 11 eleven states in candidates data set
 candidatesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
   candidates %>%
     filter( cand_party_affiliation == c( party1, party2 ) ) %>%
@@ -75,6 +47,60 @@ ggplot( test_Cand_Funct, aes(x = cand_office_state, y = n, fill = cand_party_aff
   ggtitle("Candidates in Top Ten Electoral Vote States") +
   scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
 ```
+
+
+
+
+
+
+
+```{r}
+# FUNCTION 2: lets you compare any two parties in any 11 eleven states in committees data set
+committeesFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+  committees %>%
+    filter( cmte_party_affiliation == c( party1, party2 ) ) %>%
+    filter( cmte_state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    group_by( cmte_party_affiliation, cmte_state ) %>%
+    summarise( n = n() )
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+test_Commit_Funct <- committeesFunction( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "TX", s3 = "NY", s4 = "FL", s5 = "PA", s6 = "IL", s7  = "OH", s8 = "MI", s9 = "GA", s10 = "NC", s11 = "NJ" )
+```
+
+
+
+
+
+
+
+
+
+```{r}
+# FUNCTION 3: lets you compare any two parties in any 11 eleven states in house_elections data set
+houseFunction <- function( party1, party2, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) {
+  house_elections %>%
+    filter( party == c( party1, party2 ) ) %>%
+    filter( state == c( s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ) ) %>%
+    group_by( party, state ) %>%
+    summarise( n = n() )
+}
+```
+
+```{r, warning=FALSE, message=FALSE}
+test_House_Funct <- houseFunction( party1 = "DEM", party2 = "REP", s1 = "CA", s2 = "TX", s3 = "NY", s4 = "FL", s5 = "PA", s6 = "IL", s7  = "OH", s8 = "MI", s9 = "GA", s10 = "NC", s11 = "NJ" )
+```
+
+
+
+
+
+
+
+
+
+
 
 
 ```{r, warning=FALSE, message=FALSE}
@@ -101,14 +127,6 @@ com1 <- committees %>%
   summarise( n = n() )
 ```
 
-
-```{r}
-ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Committees in Top Ten Electoral Vote States") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
-```
 
 ```{r}
 party_affiliation <- house_elections %>%
