@@ -55,7 +55,7 @@ ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = 
   scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
 ```
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 party_affiliation <- house_elections %>%
   filter( party == c("D", "R") )%>%
   filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
