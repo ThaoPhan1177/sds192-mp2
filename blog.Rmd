@@ -11,9 +11,6 @@ output: html_document
 
 ```{r, warning=FALSE, message=FALSE}
 install.packages( c("shiny", "htmlwidgets"))
-library(dplyr)
-library(ggplot2)
-library(tidyr)
 library(tidyverse)
 library(shiny)
 library(htmlwidgets)
@@ -23,47 +20,12 @@ load("committees.rda")
 load("contributions.rda")
 ```
 
-```{r}
-house_elections
-#glimpse(house_elections)
-#head(house_elections)
-
-party_affiliation <- house_elections %>%
-  filter( party == c("D", "R") )%>%
-  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
-  group_by(party, state) %>%
-  summarise( n = n() )
-
-party_affiliation
-
-ggplot(data = party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
-  geom_bar(stat = "identity", position = position_dodge()) +
-  theme_minimal() +
-  ggtitle("Are there more Democrats or Republicans running for House Elections?") +
-  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
-
-# In the chart above, we analyzed the political party affiliations of the 2011-2012 Massachusetts House of Representative candidates. What we found was that out of the 32 candidates during the 2011-2012 cycle, the majority of them were either part of the Democratic or Republican party. This makes sense because the United States politics is dominated by a two-party system in which the Democrats and Republicans are the most popular. In Massachusetts, besides those 2 parties, some House candidates were in the Independent or Libertarian parties as well; however, they made up only 4 out of the 32 candidates. 
-
-```
-
-
-
-
-
-
-```{r}
-glimpse(contributions)
-```
-
-
 ```{r, warning=FALSE, message=FALSE}
 cand1 <- candidates %>%
-  filter(cand_election_yr == c(2010, 2012)) %>%
   filter(cand_party_affiliation == c("DEM", "REP")) %>%
   filter(cand_office_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ")) %>%
   group_by(cand_party_affiliation, cand_office_state) %>%
   summarise( n = n())
-cand1 <- cand1[-c(1,2,3),]
 ```
 
 ```{r}
@@ -79,7 +41,7 @@ com1 <- committees %>%
   filter(cmte_party_affiliation == c("DEM", "REP")) %>%
   filter(cmte_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ")) %>%
   group_by(cmte_party_affiliation, cmte_state) %>%
-  summarise( n = n())
+  summarise( n = n() )
 ```
 
 ```{r}
@@ -89,4 +51,67 @@ ggplot( com1, aes(x = cmte_state, y = n, fill = cmte_party_affiliation, width = 
   ggtitle("Committees in Top Ten Electoral Vote States") +
   scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
 ```
+
+```{r}
+party_affiliation <- house_elections %>%
+  filter( party == c("D", "R") )%>%
+  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
+  group_by(party, state) %>%
+  summarise( n = n() )
+```
+
+```{r}
+ggplot(data = party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  theme_minimal() +
+  ggtitle("Are there more Democrats or Republicans running for House Elections?") +
+  scale_fill_manual(values = alpha(c("steelblue2", "indianred2")))
+```
+
+# In the chart above, we analyzed the political party affiliations of the 2011-2012 candidates (in the top ten electoral vote states) for the House of Representative. What we found was interesting. California, which leans more Democratic than Republican had more Republican candidates running for the House of Rep. Also, what we also found interesting was that several states (Florida, Ohio, N.Carolina, N.Jersey, and Pennsylvania) had just one party running for the house. We're not sure why this is, but we think that maybe it's because those states are primarily supportive of that particular party (whether Democrat or Republican) and this support is so strong that it probably makes candidates in the opposing party not run. This is just a hypothesis.  
+
+=======
+
+```{r}
+contributions
+```
+
+```{r}
+
+#rm(contributions, committees)
+joined_data <- committees %>%
+   inner_join(contributions, by = "cmte_id")
+
+```
+
+```{r}
+filtered_data <- joined_data %>%
+  filter( cmte_state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) 
+
+```
+
+```{r}
+joined_data
+```
+
+```{r}
+
+```
+
+
+
+```{r}
+amt_contributed <- contributions %>%
+  filter( state == c("CA", "TX", "NY", "FL", "PA", "IL", "OH", "MI", "GA", "NC", "NJ" )) %>%
+  select( state, transaction_amt, name ) %>%
+  arrange( desc(name) )
+
+amt_contributed
+
+most_amt <- ggplot(data = amt_contributed, aes( x = name )) + geom_bar() +
+  labs(title = "Comparison of Contributions to Committees in Massachusetts", x = "committee receiving contribution", y = "# of ppl/businesses contributing money") 
+>>>>>>> 799130b8f71a05c19522301c149bbbd92bc7e759
+
+
+
 
