@@ -119,9 +119,6 @@ Our hypothesis was pretty accurate! California does have the most committees and
 In order to keep our comparisons consistent in our project, we did the same thing with the House Elections dataset. We again plotted for top ten states and the two major political parties. We predicted that if there are more registered candidates from a certain party in a certain state, there should be more candidates running for House Elections from that party in that state. So more democrats from California and more Republicans from Florida and so on.
 
 ```{r, warning=FALSE, message=FALSE}
-
-# BELOW IS ALL THE CODE WITHOUT THE FUNCTIONS
-
 party_affiliation <- house_elections %>%
   filter( party == c("D", "R") )%>%
   filter( state == c("CA", "FL", "GA", "IL", "MI", "NC", "NJ", "NY", "OH", "PA")) %>%
@@ -138,7 +135,6 @@ ggplot(party_affiliation, aes(x = state, y = n, fill = party, width = .5)) +
   labs( fill = "Political Party") +
   labs(x = "State & How Many Candidates Are in Each Party") +
   labs(y = " # Candidates in Each Party")
-
 ```
 
 ### Analysis 
